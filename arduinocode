@@ -1,0 +1,88 @@
+//151220182003_ismailcandurak
+
+#include <Servo.h> 
+//servo kutuphanesini ekleme
+const int trigPin = 36;
+//ses sensorunden cikan ses pini
+const int echoPin = 38;
+//standart basit iletisim kodu
+
+long duration:
+//süre degiskeni intten daha yuksek kapasiteli oldugu icin long kullanılır
+int distance;
+//mesafe degiskeni
+Servo myServo;
+//servo motoru tanımlama
+
+
+void setup() {
+  
+  pinMode(trigPin, OUTPUT);
+  //ses sensorunden cikan ses 
+  pinMode(echoPin, INPUT);
+  //sensore yansıyan ses girisi
+  Serial.begin(9600);
+  //standart basit iletisim kodu 
+  myServo.attach(22);
+  //servoyu surmek icin belirtigimiz servoya bagli olan pin
+  
+}
+
+
+void loop() {
+
+  
+  //15 dereceden baslayarak soldan saga donme 
+  for(int i=15;i<=165;i++){  
+  myServo.write(i);
+  //i sayısı derece belirtmesi
+  delay(30);
+  //her 1 icin bekleme suresi 30 ms
+  distance = calculateDistance();
+  
+  Serial.print(i); 
+  //acı yazma
+  Serial.print(","); 
+  Serial.print(distance);
+  //serial porttan kontrol icin mesafe yazma
+  Serial.print(".");
+  }
+
+  
+ //ustteki islemin tam tersi  
+  for(int i=165;i>15;i--){  
+  myServo.write(i);
+  delay(30);
+  distance = calculateDistance();
+  Serial.print(i);
+  //acı yazma
+  Serial.print(",");
+  Serial.print(distance);
+  //serial porttan kontrol icin mesafe yazma
+  Serial.print(".");
+  }
+}
+
+
+//calculate distance fonksiyonu 
+//mesafayi olcmek icin olusturulan fonksiyon
+int calculateDistance(){ 
+  
+  digitalWrite(trigPin, LOW); 
+  //sensorden deger okumak icin trigpini lowa cekilir
+  delayMicroseconds(2);
+  //arduinonun bekleyeceği sure
+ 
+  digitalWrite(trigPin, HIGH); 
+  //trigpininden sensore 5vluk bir sinyal yollama 
+  delayMicroseconds(10);
+  //Arduino bekleme suresi
+  digitalWrite(trigPin, LOW);
+  //trigpin tekrar lowa cekilir
+  duration = pulseIn(echoPin, HIGH); 
+  //pulsein fonksiyonu ile echopinine gelen sinyalin zamanını olcem degisken olarak atama
+  distance= duration*0.034/2;
+  //formul yardımıyla mesafe=zaman*sesinhızı/(gidis+gelis)=2
+  return distance;
+
+}
