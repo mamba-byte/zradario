@@ -1,4 +1,8 @@
-import processing.serial.*; // kütüphane entegresi
+//15120182003_ismailcandurak
+
+
+
+import processing.serial.*; // adding lib
 import java.awt.event.KeyEvent; 
 import java.io.IOException;
 
@@ -18,7 +22,7 @@ void setup() {
   
  size (1366, 700);
  smooth();
- myPort = new Serial(this,"COM3", 9600); // Com portunu seçme
+ myPort = new Serial(this,"COM3", 9600); // Com port choosing
  myPort.bufferUntil('.'); 
 
 }
@@ -31,7 +35,7 @@ void draw() {
   fill(0,4); 
   rect(0, 0, width, 1010); 
   
-  fill(98,245,31); // yeþil renk
+  fill(98,245,31); // green color
 
   drawRadar(); 
   drawLine();
@@ -59,12 +63,12 @@ void drawRadar() {
   noFill();
   strokeWeight(2);
   stroke(98,245,31);
-  // arc çizgilerini çizdirme
+  // arc lines drawing
   arc(0,0,1300,1300,PI,TWO_PI);
   arc(0,0,1000,1000,PI,TWO_PI);
   arc(0,0,700,700,PI,TWO_PI);
   arc(0,0,400,400,PI,TWO_PI);
-  // açıları çizdirme
+  // angles drawing
   line(-700,0,700,0);
   line(0,0,-700*cos(radians(30)),-700*sin(radians(30)));
   line(0,0,-700*cos(radians(60)),-700*sin(radians(60)));
@@ -79,9 +83,9 @@ void drawObject() {
   pushMatrix();
   translate(683,700); 
   strokeWeight(9);
-  stroke(255,10,10); // kirmizi renk olacak yerler
+  stroke(255,10,10); // areas which is red
   pixsDistance = iDistance*22.5; 
-  // 40 cm ye kadar ölçer
+  // 40 cm range limit
   if(iDistance<40){
     
   line(pixsDistance*cos(radians(iAngle)),-pixsDistance*sin(radians(iAngle)),700*cos(radians(iAngle)),-700*sin(radians(iAngle)));
