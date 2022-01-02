@@ -1,30 +1,30 @@
 //151220182003_ismailcandurak
 
 #include <Servo.h> 
-//servo kutuphanesini ekleme
+//adding servo library
 const int trigPin = 36;
 //ses sensorunden cikan ses pini
 const int echoPin = 38;
 //standart basit iletisim kodu
 
 long duration:
-//süre degiskeni intten daha yuksek kapasiteli oldugu icin long kullanılır
+//time variable
 int distance;
-//mesafe degiskeni
+//distance varible
 Servo myServo;
-//servo motoru tanımlama
+//servo definitin
 
 
 void setup() {
   
   pinMode(trigPin, OUTPUT);
-  //ses sensorunden cikan ses 
+  //sound output 
   pinMode(echoPin, INPUT);
-  //sensore yansıyan ses girisi
+  //sound input
   Serial.begin(9600);
-  //standart basit iletisim kodu 
+  //standard comunication code 
   myServo.attach(22);
-  //servoyu surmek icin belirtigimiz servoya bagli olan pin
+  //servos pin
   
 }
 
@@ -32,57 +32,53 @@ void setup() {
 void loop() {
 
   
-  //15 dereceden baslayarak soldan saga donme 
+  //starts 15 degree left to right 
   for(int i=15;i<=165;i++){  
   myServo.write(i);
-  //i sayısı derece belirtmesi
+  //i for degree
   delay(30);
-  //her 1 icin bekleme suresi 30 ms
+  //every one degree wait duraition
   distance = calculateDistance();
   
   Serial.print(i); 
-  //acı yazma
+  //degree print
   Serial.print(","); 
   Serial.print(distance);
-  //serial porttan kontrol icin mesafe yazma
+  //print distance for control in serial port
   Serial.print(".");
   }
 
   
- //ustteki islemin tam tersi  
+ //opposito of upper  
   for(int i=165;i>15;i--){  
   myServo.write(i);
   delay(30);
   distance = calculateDistance();
   Serial.print(i);
-  //acı yazma
   Serial.print(",");
   Serial.print(distance);
-  //serial porttan kontrol icin mesafe yazma
   Serial.print(".");
   }
 }
 
 
-//calculate distance fonksiyonu 
-//mesafayi olcmek icin olusturulan fonksiyon
+//calculate distance func 
+//func for calculate distance
 int calculateDistance(){ 
   
   digitalWrite(trigPin, LOW); 
-  //sensorden deger okumak icin trigpini lowa cekilir
+  //trigpin is low for reading value
   delayMicroseconds(2);
-  //arduinonun bekleyeceği sure
+  //arduino wait time
  
   digitalWrite(trigPin, HIGH); 
-  //trigpininden sensore 5vluk bir sinyal yollama 
+  //5v trigpin to sensor
   delayMicroseconds(10);
-  //Arduino bekleme suresi
   digitalWrite(trigPin, LOW);
-  //trigpin tekrar lowa cekilir
   duration = pulseIn(echoPin, HIGH); 
-  //pulsein fonksiyonu ile echopinine gelen sinyalin zamanını olcem degisken olarak atama
+  //signal's coming time which is comes to echopin making a variable with pulsein func
   distance= duration*0.034/2;
-  //formul yardımıyla mesafe=zaman*sesinhızı/(gidis+gelis)=2
+  //with the help of equation and sound speed
   return distance;
 
 }
